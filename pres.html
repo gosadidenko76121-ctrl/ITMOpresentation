@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Манифест: ИТМО</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-light: #f8fafc;
+    --bg-white: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --shadow: 0 10px 30px rgba(0,0,0,0.05);
+    --radius: 20px;
+  }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    overflow: hidden; /* Убираем скролл, теперь всё управляется мышкой */
+    user-select: none; /* Запрещаем выделение текста при кликах */
+  }
+
+  /* Контейнер для слайдов */
+  #presentation-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* Общие настройки слайдов */
+  .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    box-sizing: border-box;
+    padding: 60px;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+    transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s;
+    z-index: 1;
+  }
+
+  /* Активный слайд */
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    z-index: 10;
+  }
+
+  h1 { font-weight: 900; margin: 0; line-height: 1.1; }
+  p, li { font-weight: 500; line-height: 1.6; }
+  ul { padding-left: 20px; }
+
+  .placeholder {
+    background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-align: center;
+    padding: 20px;
+  }
+
+  /* ---------------- АНИМАЦИИ ---------------- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* Применяем анимации только к элементам внутри активного слайда */
+  .slide.active h1 { animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.2s; opacity: 0; }
+  .slide.active p, .slide.active ul { animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.4s; opacity: 0; }
+  .slide.active img, .slide.active .placeholder, .slide.active .s3-card, .slide.active .s4-stat { 
+    animation: scaleIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.5s; 
+    opacity: 0; 
+  }
+  
+  /* Каскадное появление (по очереди) */
+  .slide.active .s3-card:nth-child(1) { animation-delay: 0.4s; }
+  .slide.active .s3-card:nth-child(2) { animation-delay: 0.6s; }
+  .slide.active .s3-card:nth-child(3) { animation-delay: 0.8s; }
+  
+  .slide.active .s4-stat:nth-child(1) { animation-delay: 0.4s; }
+  .slide.active .s4-stat:nth-child(2) { animation-delay: 0.5s; }
+  .slide.active .s4-stat:nth-child(3) { animation-delay: 0.6s; }
+  .slide.active .s4-stat:nth-child(4) { animation-delay: 0.7s; }
+
+  .slide.active .s5-logo { animation: scaleIn 0.5s ease forwards; opacity: 0; }
+  .slide.active .s5-logo:nth-child(1) { animation-delay: 0.4s; }
+  .slide.active .s5-logo:nth-child(2) { animation-delay: 0.5s; }
+  .slide.active .s5-logo:nth-child(3) { animation-delay: 0.6s; }
+  .slide.active .s5-logo:nth-child(4) { animation-delay: 0.7s; }
+  .slide.active .s5-logo:nth-child(5) { animation-delay: 0.8s; }
+  .slide.active .s5-logo:nth-child(6) { animation-delay: 0.9s; }
+
+  /* ---------------- СТИЛИ СЛАЙДОВ ---------------- */
+  /* Слайд 1 */
+  .slide-1 { background: radial-gradient(circle at 80% 20%, #dbeafe, var(--bg-light) 60%); align-items: center; }
+  .s1-content { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); padding: 60px; border-radius: var(--radius); box-shadow: var(--shadow); max-width: 600px; border: 1px solid rgba(255, 255, 255, 0.5); }
+  .s1-content h1 { font-size: 3.5rem; color: var(--accent); margin-bottom: 20px; }
+  .s1-content p { font-size: 1.5rem; color: var(--text-muted); }
+  .s1-decor { position: absolute; right: -50px; top: 10%; width: 500px; height: 500px; border-radius: 50%; background: linear-gradient(45deg, #bfdbfe, #eff6ff); z-index: -1; }
+
+  /* Слайд 2 */
+  .slide-2 { align-items: center; justify-content: space-between; background: var(--bg-white); }
+  .s2-text { width: 45%; }
+  .s2-text h1 { font-size: 3rem; margin-bottom: 30px; }
+  .s2-text li { font-size: 1.4rem; margin-bottom: 15px; }
+  .s2-image { width: 45%; height: 70vh; border-radius: 40px 0 40px 0; object-fit: cover; box-shadow: var(--shadow); }
+
+  /* Слайд 3 */
+  .slide-3 { flex-direction: column; background: linear-gradient(to bottom, var(--accent-light) 0%, var(--bg-white) 100%); }
+  .slide-3 h1 { font-size: 3rem; text-align: center; margin-bottom: 50px; }
+  .s3-grid { display: flex; gap: 30px; height: 50vh; width: 100%; max-width: 1200px; margin: 0 auto;}
+  .s3-card { flex: 1; background: var(--bg-white); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+  .s3-card-img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; }
+  .s3-card h3 { font-size: 1.5rem; color: var(--accent); margin-top: 0; }
+  .s3-card p { font-size: 1.1rem; }
+
+  /* Слайд 4 */
+  .slide-4 { align-items: center; background: var(--bg-light); gap: 50px; justify-content: center; }
+  .s4-container { display: flex; max-width: 1200px; width: 100%; align-items: center; }
+  .s4-title { width: 40%; }
+  .s4-title h1 { font-size: 3rem; }
+  .s4-grid { width: 60%; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  .s4-stat { background: var(--bg-white); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow); border-left: 5px solid var(--accent); transition: transform 0.3s; }
+  .s4-stat:hover { transform: translateY(-10px); }
+  .s4-stat h2 { font-size: 3.5rem; margin: 0; color: var(--accent); }
+  .s4-stat p { font-size: 1.2rem; margin: 10px 0 0 0; color: var(--text-muted); }
+
+  /* Слайд 5 */
+  .slide-5 { flex-direction: column; justify-content: center; background: var(--bg-white); text-align: center; }
+  .slide-5 h1 { font-size: 3rem; margin-bottom: 20px; }
+  .slide-5 > p { font-size: 1.5rem; margin-bottom: 50px; color: var(--text-muted); max-width: 800px; margin-left: auto; margin-right: auto; }
+  .s5-logos { display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; max-width: 1000px; margin: 0 auto; }
+ /* Контейнер для логотипа: белый фон, тень и плавный переход */
+  .s5-logo { 
+    width: 160px; 
+    height: 160px; 
+    background: var(--bg-white); 
+    border-radius: 15px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 15px; 
+    box-sizing: border-box;
+    box-shadow: var(--shadow);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Пружинистая анимация */
+    cursor: pointer;
+    position: relative;
+  }
+
+  /* Настройки самой картинки, чтобы она не сплющивалась и помещалась в блок */
+  .s5-logo img {
+    border-radius: 15px; 
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+  }
+
+  /* Эффект при наведении (hover): увеличиваем весь блок и добавляем цветную тень */
+  .s5-logo:hover { 
+    transform: scale(1.15) translateY(-5px); /* Увеличиваем на 15% и чуть поднимаем вверх */
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.25); /* Добавляем красивую синюю тень */
+    z-index: 10;
+  }
+  /* Слайд 6 */
+  .slide-6 { background: var(--accent-light); align-items: center; justify-content: center; }
+  .s6-container { display: flex; width: 100%; max-width: 1200px; gap: 50px; align-items: center;}
+  .s6-collage { width: 50%; position: relative; height: 60vh; }
+  .s6-box { position: absolute; border-radius: var(--radius); box-shadow: var(--shadow); object-fit: cover; }
+  .s6-box-1 { width: 60%; height: 60%; top: 0; left: 0; z-index: 2; }
+  .s6-box-2 { width: 50%; height: 50%; bottom: 0; right: 0; z-index: 1; }
+  .s6-box img { border-radius: 15px; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;}
+  .s6-text { width: 50%; display: flex; flex-direction: column; justify-content: center; }
+  .s6-text h1 { font-size: 3rem; margin-bottom: 30px; }
+  .s6-text ul { list-style-type: none; padding: 0; }
+  .s6-text li { font-size: 1.3rem; margin-bottom: 20px; background: var(--bg-white); padding: 15px 25px; border-radius: 50px; display: inline-block; box-shadow: var(--shadow); }
+
+  /* Слайд 7 */
+  .slide-7 { flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at center, var(--bg-white) 0%, var(--bg-light) 100%); }
+  .s7-tag { background: var(--accent); color: white; padding: 10px 20px; border-radius: 30px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+  .slide-7 h1 { font-size: 4rem; max-width: 900px; margin-bottom: 30px; }
+  .slide-7 p { font-size: 1.6rem; color: var(--text-muted); max-width: 700px; }
+
+  /* Слайд 8 */
+  .slide-8 { background: var(--text-main); color: var(--bg-white); flex-direction: column; justify-content: center; padding: 100px; }
+  .slide-8 h1 { font-size: 3rem; color: var(--bg-white); margin-bottom: 40px; border-bottom: 2px solid #334155; padding-bottom: 20px; display: inline-block; }
+  .slide-8 ul { list-style: none; padding: 0; }
+  .slide-8 li { font-size: 1.5rem; margin-bottom: 20px; color: #cbd5e1; }
+  .slide-8 li::before { content: "→"; color: var(--accent); margin-right: 15px; }
+
+  /* Подсказка для управления */
+  .controls-hint {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+  body:hover .controls-hint { opacity: 0; } /* Прячем подсказку, когда мышка двигается */
+</style>
+</head>
+<body>
+
+<div class="controls-hint">Левая кнопка ➔ Вперед | Правая кнопка ➔ Назад</div>
+
+<div id="presentation-container">
+  
+  <div class="slide slide-1 active">
+    <div class="s1-decor"></div>
+    <div class="s1-content">
+      <p>Манифест абитуриента</p>
+      <h1>Учебное заведение<br>глазами будущего</h1>
+      <p style="font-size: 1.2rem; font-weight: 300;">Номинация: Осознанный выбор<br>Георгий Диденко<br>п. Янтарный<br>2026</p>
+    </div>
+  </div>
+
+  <div class="slide slide-2">
+    <div class="s2-text">
+      <h1>Почему именно<br><span style="color: var(--accent);">ИТМО?</span></h1>
+      <ul>
+        <li>Больше, чем университет (IT's MOre).</li>
+        <li>Экосистема для олимпиадников.</li>
+        <li>Фокус на Искусственном Интеллекте.</li>
+      </ul>
+    </div>
+    <img src="front.webp" alt="ИТМО вход" class="s2-image">
+  </div>
+
+  <div class="slide slide-3">
+    <h1>Академическая среда</h1>
+    <div class="s3-grid">
+      <div class="s3-card">
+        <img src="2.jpg" alt="Здание" class="s3-card-img">
+        <h3>Фундамент</h3>
+        <p>Глубокая база: от высшей математики до алгоритмов Python.</p>
+      </div>
+      <div class="s3-card">
+        <img src="tech.webp" alt="Технологии" class="s3-card-img">
+        <h3>Технологии</h3>
+        <p>Современные лаборатории, коворкинги и технопарки 24/7.</p>
+      </div>
+      <div class="s3-card">
+        <img src="lecture.webp" alt="Люди" class="s3-card-img">
+        <h3>Люди</h3>
+        <p>Преподаватели — действующие практики из IT-индустрии.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-4">
+    <div class="s4-container">
+      <div class="s4-title">
+        <h1>ИТМО<br>в цифрах</h1>
+        <p style="font-size: 1.2rem; color: var(--text-muted);">Объективные метрики востребованности.</p>
+      </div>
+      <div class="s4-grid">
+        <div class="s4-stat"><h2>#4</h2><p>Лучшие вузы России (Forbes, 2026)</p></div>
+        <div class="s4-stat"><h2>#1</h2><p>Университеты Санкт-Петербурга</p></div>
+        <div class="s4-stat"><h2>Топ-3</h2><p>Подготовка специалистов ИИ</p></div>
+        <div class="s4-stat"><h2>#2</h2><p>По зарплатам IT-выпускников</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-5">
+    <h1>Профессиональные перспективы</h1>
+    <p>Оплачиваемые стажировки на первых курсах и гарантированный старт карьеры.</p>
+    <div class="s5-logos">
+      <div class="s5-logo"><img src="yandex.jpg" alt="Яндекс"></div>
+      <div class="s5-logo"><img src="sber.png" alt="Сбер"></div>
+      <div class="s5-logo"><img src="vk.png" alt="VK"></div>
+      <div class="s5-logo"><img src="tbank.png" alt="Т-Банк"></div>
+      <div class="s5-logo"><img src="rosatom.jpg" alt="Росатом"></div>
+    </div>
+  </div>
+
+  <div class="slide slide-6">
+    <div class="s6-container">
+      <div class="s6-collage">
+        <div class="placeholder s6-box s6-box-1"><img src="code.jpg" alt="Хакатон"></div>
+        <div class="placeholder s6-box s6-box-2"><img src="gym.jpg" alt="Зал"></div>
+      </div>
+      <div class="s6-text">
+        <h1>Интеграция</h1>
+        <ul>
+          <li>💻 <b>Hard skills:</b> Клубы ИИ и хакатоны</li>
+          <li>🎸 <b>Soft skills:</b> Творчество и музыка</li>
+          <li>🏋️‍♂️ <b>Спорт:</b> Инфраструктура в кампусе</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-7">
+    <div class="s7-tag">Вектор развития</div>
+    <h1>От абитуриента до востребованного AI-инженера</h1>
+    <p>Мой вклад: разработка генеративных нейросетей, развитие IT-кластера в родном регионе и создание новых алгоритмов.</p>
+  </div>
+
+  <div class="slide slide-8">
+    <h1>Источники информации</h1>
+    <ul>
+      <li>Рейтинг 100 лучших университетов России (Forbes, 2026).</li>
+      <li>Исследование заработных плат выпускников IT-сферы (SuperJob).</li>
+      <li>Официальные данные и портал новостей Университета ИТМО.</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let currentSlide = 0;
+
+  // Отключаем стандартное меню по правой кнопке мыши
+  document.addEventListener('contextmenu', event => event.preventDefault());
+
+  function showSlide(index) {
+    // Убираем класс active у всех слайдов
+    slides.forEach(slide => slide.classList.remove('active'));
+    
+    // Закольцовываем презентацию
+    if (index >= slides.length) {
+      currentSlide = 0;
+    } else if (index < 0) {
+      currentSlide = slides.length - 1;
+    } else {
+      currentSlide = index;
+    }
+    
+    // Добавляем класс active текущему слайду
+    slides[currentSlide].classList.add('active');
+  }
+
+  // Обработчик кликов мыши
+  document.addEventListener('mousedown', (e) => {
+    // 0 - левая кнопка, 1 - колесико, 2 - правая кнопка
+    if (e.button === 0) { 
+      // Правая кнопка -> Вперед
+      showSlide(currentSlide + 1);
+    } else if (e.button === 2) {
+      // Левая кнопка -> Назад
+      showSlide(currentSlide - 1);
+    }
+  });
+</script>
+
+</body>
+</html>
